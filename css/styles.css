@@ -71,6 +71,15 @@ body {
   font-style: normal;
 }
 
+.category { 
+  font-style: italic;
+}
+
+.category:before {
+  content: ", ";
+  font-style: normal;
+}
+
 #loadQuote {
   position: fixed;
   width: 12em;
