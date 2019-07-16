@@ -6,16 +6,12 @@ project 1 - A Random Quote Generator
 /*** SELECTORS ***/
 // ** DP ** Instead of using the selectors we will just write the entire HTML inside printString and then update the innerHTML of #quote-box
 // ** DP ** We have to remove the 'category' from being displayed with the quote information and position a drop down right next to the button to select catg.
-// var quoteSelect = document.getElementsByClassName(".quote");
-// var sourceSelect = document.getElementsByClassName(".source");
-// var citationSelect = document.getElementsByClassName(".citation");
-// var yearSelect = document.getElementsByClassName(".year");
-// var categorySelect = document.getElementsByClassName(".category");
+
 
 //Loads a new quote when user clicks the button
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
 
-var quotes = [
+const quotes = [
   {
     quote: "Every great developer you know got there by solving problems they were unqualified to solve until they actually did it.",
     source: "Patrick McKenzie",
@@ -69,48 +65,54 @@ var quotes = [
 
 //Generates a random int from 0 to the size of the quotes array and returns the quote at that corresponding index
 function getRandomQuote() {
-  var ranQuote = Math.floor(Math.random() * quotes.length);
+  const ranQuote = Math.floor(Math.random() * quotes.length);
   return quotes[ranQuote];
-  }
+}
   
-  function ranRGB () {
-    return "rgb(" + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + 
-    Math.floor(Math.random() * 256) + ")";
-  }
+function ranRGB () {
+  return "rgb(" + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + 
+  Math.floor(Math.random() * 256) + ")";
+}
   
-  function printQuote() {
-    
+function printQuote() {
     // Selects a random color and applies it as the BG color for the body and buttons
-    ranColor = ranRGB();
-    console.log(ranColor);
-    document.body.style.backgroundColor = ranColor;
-    document.getElementById("loadQuote").style.backgroundColor = ranColor; 
-    // document.getElementById("category").style.backgroundColor = ranColor; 
+  ranColor = ranRGB();
+  console.log(ranColor);
+  document.body.style.backgroundColor = ranColor;
+  document.getElementById("loadQuote").style.backgroundColor = ranColor; 
+  document.getElementsByClassName("dropdown-btn")[0].style.backgroundColor = ranColor;  
 
-    document.getElementsByClassName("dropdown-btn")[0].style.backgroundColor = ranColor;  
-
-
-    
-    var chosenQuote = getRandomQuote();
-    var printString = "";
-    printString = '<p class="quote">' + chosenQuote.quote + '</p><p class="source">' + chosenQuote.source;
-
-    if (chosenQuote.citation !== ""){
-      printString += '<span class="citation">' + chosenQuote.citation + '</span>';
-    }
-    if (chosenQuote.year !== ""){
-      printString += '<span class="year">' + chosenQuote.year + '</span>';      
-    }
-    if (chosenQuote.category !== ""){
-      printString += '<span class="category">' + chosenQuote.category + '</span>';
-    }
-
-    printString += '</p>';
-    document.getElementById("quote-box").innerHTML = printString;
+  // Chooses a random quote out of the quotes array and prepares the string to update the page
+  const chosenQuote = getRandomQuote();
+  let printString = "";
+  printString = '<p class="quote">' + chosenQuote.quote + '</p><p class="source">' + chosenQuote.source;
+  // Citation, year and category properties are only displayed if present
+  if (chosenQuote.citation !== ""){
+    printString += '<span class="citation">' + chosenQuote.citation + '</span>';
   }
+  if (chosenQuote.year !== ""){
+    printString += '<span class="year">' + chosenQuote.year + '</span>';      
+  }
+  if (chosenQuote.category !== ""){
+    printString += '<span class="category">' + chosenQuote.category + '</span>';
+  }
+  printString += '</p>';
 
+  // Updates the quote div with the new quote
+  document.getElementById("quote-box").innerHTML = printString;
+}
 
+let interval = 0;
+
+function startsAutoRefresh () {
+  interval = setInterval(printQuote, 2000);
+}
+
+function stopsAutoRefresh () {
+  clearInterval(interval);
+}
 /*** NEXT FEATURES TO BE IMPLEMENTED: 
+ * Filter the quotes based on the selected tag.
  * setInterval() to change color every few seconds,
  * a Play/Pause button (svg) that clearInterval(),
- * Favourite quote and Favourite color buttons
+ * Favourite quote and Favourite color buttons */
